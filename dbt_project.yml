@@ -33,3 +33,7 @@ vars:
     sales_channel_exclusion: 'dummy' # exclude orders that came from certain sales channels from analytics e.g. 'channel1|channel2'
 
 models:
+  bolt_blueprint:
+    reporting:
+      +schema: reporting
+      +materialized: table
