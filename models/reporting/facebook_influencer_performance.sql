@@ -1,5 +1,5 @@
 {{ config (
-    alias = target.database + '_facebook_ad_performance_influencer'
+    alias = target.database + '_facebook_influencer_performance'
 )}}
 
 WITH gut_health as
@@ -138,7 +138,7 @@ science as
     AND ad_name ~* '_SC_'
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11),
 
-others_data as
+others as
     (SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Others' as theme,
         CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
             WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
@@ -155,7 +155,8 @@ others_data as
     AND (ad_name !~* '_GH_' AND ad_name !~* '_IH_' AND ad_name !~* '_PF_' AND ad_name !~* '_TBH_' AND ad_name !~* '_PB_' AND ad_name !~* '_SC_')
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11)
 
-SELECT * FROM gut_health 
+SELECT * FROM others 
+    LEFT JOIN gut_health USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN gut_health_no_bobby USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN immune_health USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN product_features USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
@@ -163,4 +164,3 @@ SELECT * FROM gut_health
     LEFT JOIN total_body_health_no_shred USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN product_benefits USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN science USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
-    LEFT JOIN others_data USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
