@@ -138,7 +138,7 @@ science as
     AND ad_name ~* '_SC_'
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11),
 
-others as
+others_data as
     (SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Others' as theme,
         CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
             WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
@@ -163,4 +163,4 @@ SELECT * FROM gut_health
     LEFT JOIN total_body_health_no_shred USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN product_benefits USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
     LEFT JOIN science USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
-    LEFT JOIN others USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
+    LEFT JOIN others_data USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
