@@ -1,1 +1,10 @@
 version: 2
+
+sources:
+  - name: facebook_raw
+    schema: facebook_raw
+    tables:
+      - name: ads_insights_age_gender
+        identifier: ads_insights_age_gender
+      - name: ads_insights_age_gender_actions
+        identifier: ads_insights_age_gender_actions
