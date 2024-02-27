@@ -1,5 +1,5 @@
 {{ config (
-    alias = target.database + '_facebook_influencer_performance'
+    alias = target.database + '_facebook_ad_performance_influencer'
 )}}
 
 WITH gut_health as
