@@ -169,3 +169,4 @@ LEFT JOIN total_body_health_no_shred USING(date, ad_id, ad_name, adset_id, adset
 LEFT JOIN product_benefits USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
 LEFT JOIN science USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
 LEFT JOIN others USING(date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, theme, influencer_gender)
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11
