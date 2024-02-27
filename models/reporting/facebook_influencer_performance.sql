@@ -4,7 +4,7 @@
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Gut Health' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -22,7 +22,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Gut Health + no Bobby Parrish ads' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -40,7 +40,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Immune Health' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -58,7 +58,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Product Features' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -76,7 +76,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Total Body Health' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -94,7 +94,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Total Body Health + no Shred ads' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -112,7 +112,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Product Benefits' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -130,7 +130,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Science' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
@@ -148,7 +148,7 @@ UNION ALL
 
 SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, age, gender, 'Others' as theme,
     CASE WHEN ad_name ~* 'Shred' OR ad_name ~* 'Bobby' THEN 'Male'
-        WHEN ad_name ~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
+        WHEN ad_name !~* 'Shred' AND ad_name !~* 'Bobby' THEN 'Female'
     END as influencer_gender,
     COALESCE(SUM(spend),0) as spend,
     COALESCE(SUM(impressions),0) as impressions,
