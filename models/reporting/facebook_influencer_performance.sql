@@ -102,8 +102,8 @@ SELECT date, ad_id, ad_name, adset_id, adset_name, campaign_id, campaign_name, a
     COALESCE(SUM(purchases),0) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
 LEFT JOIN 
-    (SELECT date, ad_id, COALESCE(SUM(CASE WHEN action_type = 'purchase' THEN value END),0) as purchases 
-    FROM {{ source('facebook_raw','ads_insights_age_gender_actions') }} GROUP BY 1,2) USING (date,ad_id)
+    (SELECT date, ad_id, _fivetran_id, COALESCE(SUM(CASE WHEN action_type = 'purchase' THEN value END),0) as purchases 
+    FROM {{ source('facebook_raw','ads_insights_age_gender_actions') }} GROUP BY 1,2,3) USING (date,ad_id, _fivetran_id)
 WHERE ad_name ~* 'INF'
 AND (ad_name ~* '_TBH_' AND ad_name !~* 'Shred')
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11
