@@ -46,7 +46,7 @@ CASE WHEN ad_name ~* 'Bobby' THEN 'Bobby'
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -77,7 +77,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -110,7 +110,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -174,7 +174,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -207,7 +207,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -239,7 +239,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -271,7 +271,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -303,7 +303,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -334,7 +334,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -365,7 +365,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -396,7 +396,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
@@ -427,7 +427,7 @@ CASE
         WHEN ad_name ~* 'Shred' THEN 'Shred' 
         WHEN ad_name ~* 'VivianeAudi' THEN 'VivianeAudi' end as name,age,gender,
 SUM(coalesce(spend,0)) as spend,
-SUM(coalesce(link_clicks,0)) as clicks,
+SUM(coalesce(inline_link_clicks,0)) as clicks,
 SUM(coalesce(impressions,0)) as impressions,
 SUM(coalesce(purchases,0)) as purchases
 FROM {{ source('facebook_raw','ads_insights_age_gender') }}
