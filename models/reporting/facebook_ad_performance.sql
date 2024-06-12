@@ -27,5 +27,6 @@ impressions,
 link_clicks,
 add_to_cart,
 purchases,
-revenue
+revenue,
+"offsite_conversion.custom.975370734291959" as "VS-01 WK"
 FROM {{ ref('facebook_performance_by_ad') }}
