@@ -16,6 +16,5 @@ spend,
 impressions,
 clicks,
 conversions as purchases,
-conversions_value as revenue,
-"offsite_conversion.custom.975370734291959" as "VS-01 WK"
+conversions_value as revenue
 FROM {{ ref('googleads_performance_by_ad') }}
