@@ -17,6 +17,5 @@ conversions as purchases,
 conversions_value as revenue,
 search_impression_share,
 search_budget_lost_impression_share,
-search_rank_lost_impression_share,
-"offsite_conversion.custom.975370734291959" as "VS-01 WK"
+search_rank_lost_impression_share
 FROM {{ ref('googleads_performance_by_campaign') }}
