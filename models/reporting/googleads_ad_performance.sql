@@ -15,10 +15,10 @@ case
     else 'Other'
 end as product,
 case 
-    when campaign_name ~* 'Shopping' then 'Shopping'
-    when (campaign_name ~* 'Performance Max' or campaign_name ~* 'PMax') then 'PMax'
-    when campaign_name ~* 'NB' then 'Non Brand'
-    when campaign_name ~* 'Brand' then 'Branded'
+    when campaign_name ~* 'Shopping' and campaign_name !~* 'amazon' then 'Shopping'
+    when (campaign_name ~* 'Performance Max' or campaign_name ~* 'PMax') and campaign_name !~* 'amazon' then 'PMax'
+    when campaign_name ~* 'NB' and campaign_name !~* 'amazon' then 'Non Brand'
+    when campaign_name ~* 'Brand' and campaign_name !~* 'amazon' then 'Branded'
     else 'Other'
 end as campaign_type_custom,
 ad_group_name,
