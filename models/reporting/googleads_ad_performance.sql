@@ -19,7 +19,8 @@ case
     else 'Other'
 end as product,    
 case 
-    when campaign_name ~* 'Shopping' and campaign_name !~* 'amazon' then 'Shopping'
+    when campaign_name ~* 'Shopping' and campaign_name ~* 'Brand' and campaign_name !~* 'amazon' then 'Shopping - Brand'
+    when campaign_name ~* 'Shopping' and campaign_name !~* 'Brand' and campaign_name !~* 'amazon' then 'Shopping - Non Brand'
     when (campaign_name ~* 'Performance Max' or campaign_name ~* 'PMax') and campaign_name !~* 'amazon' then 'PMax'
     when campaign_name ~* 'NB' and campaign_name !~* 'amazon' then 'Non Brand'
     when campaign_name ~* 'Brand' and campaign_name !~* 'amazon' then 'Branded'
