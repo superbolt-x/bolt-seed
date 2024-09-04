@@ -9,11 +9,15 @@ campaign_id,
 campaign_status,
 campaign_type_default,
 case 
+    when campaign_name ~* 'INTL' then 'INTL'
+    else 'US'
+end as country,
+case 
     when campaign_name ~* 'DS01' then 'DS01'
     when campaign_name ~* 'VS01' then 'VS01'
     when campaign_name ~* 'PDS08' then 'PDS08'
     else 'Other'
-end as product,
+end as product,    
 case 
     when campaign_name ~* 'Shopping' and campaign_name !~* 'amazon' then 'Shopping'
     when (campaign_name ~* 'Performance Max' or campaign_name ~* 'PMax') and campaign_name !~* 'amazon' then 'PMax'
