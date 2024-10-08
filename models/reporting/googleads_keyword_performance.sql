@@ -6,7 +6,7 @@
 
 WITH initial_data as 
     (SELECT date::date as date, keyword_text as keyword, keyword_match_type as match_type, ad_group_name, ad_group_id, campaign_name, campaign_id,
-        COALESCE(SUM(cost_micros/1000000),0) as spend, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(impressions),0) as impressions
+        COALESCE(SUM(cost_micros/1000000),0) as spend, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(impressions),0) as impressions,
         COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue
     FROM {{ source('googleads_raw', 'keyword_performance_report') }}
     LEFT JOIN 
