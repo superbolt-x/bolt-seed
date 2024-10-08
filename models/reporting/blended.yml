@@ -8,3 +8,18 @@ sources:
         identifier: ads_insights_age_gender
       - name: ads_insights_age_gender_actions
         identifier: ads_insights_age_gender_actions
+
+  - name: s3_raw
+    schema: s3_raw
+    tables:
+      - name: lasttouch_performance
+        identifier: lasttouch_performance
+
+  - name: reporting
+    schema: reporting
+    tables:
+      - name: facebook_ad_performance
+        identifier: seed_facebook_ad_performance
+  
+      - name: googleads_campaign_performance
+        identifier: seed_googleads_campaign_performance
