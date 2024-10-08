@@ -15,6 +15,14 @@ sources:
       - name: lasttouch_performance
         identifier: lasttouch_performance
 
+  - name: googleads_raw
+    schema: googleads_raw
+    tables:
+      - name: keyword_performance_report
+        identifier: keyword_performance_report
+      - name: keyword_convtype_performance_report
+        identifier: keyword_convtype_performance_report
+
   - name: reporting
     schema: reporting
     tables:
