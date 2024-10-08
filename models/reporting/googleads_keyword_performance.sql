@@ -43,7 +43,7 @@ cleaned_data as
     end as campaign_type_custom,
     COALESCE(SUM(spend),0) as spend, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(purchases),0) as purchases, 
     COALESCE(SUM(revenue),0) as revenue
-    FROM initial_data
+    FROM cleaned_data
     GROUP BY 1,2,3,4,5,6,7,8,9,10
     {% if not loop.last %}UNION ALL
     {% endif %}
