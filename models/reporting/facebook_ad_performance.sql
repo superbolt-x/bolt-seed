@@ -37,5 +37,5 @@ purchases,
 revenue,
 "offsite_conversion.custom.975370734291959" as "VS-01 WK",
 --reach,
-lead as leads
+onsite_web_lead as leads
 FROM {{ ref('facebook_performance_by_ad') }}
