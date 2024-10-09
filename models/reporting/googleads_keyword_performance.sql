@@ -10,10 +10,11 @@ WITH initial_data as
         COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue
     FROM {{ source('googleads_raw', 'keyword_performance_report') }}
     LEFT JOIN 
-        (SELECT date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id,
+        (SELECT _fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id,
         CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions END as purchases, 
         CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions_value END as revenue
-        FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}) USING (date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
+        FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}) 
+    USING (_fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
     GROUP BY 1,2,3,4,5,6,7),
     
 cleaned_data as 
