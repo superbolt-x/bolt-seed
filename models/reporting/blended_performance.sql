@@ -16,7 +16,7 @@ WITH last_updated_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
             utm_campaign, utm_content, 
-            CASE WHEN channel = 'Google Ads' AND campaign_type_custom NOT IN ('Non Brand','Brand') THEN null ELSE utm_term,
+            CASE WHEN channel = 'Google Ads' AND campaign_type_custom NOT IN ('Non Brand','Brand') THEN null ELSE utm_term END as utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' WHEN channel ~* 'google' THEN 'Google Ads' END as channel,
             CASE WHEN utm_campaign ~* 'INTL' THEN 'INTL' ELSE 'US' END as market,
             CASE WHEN utm_campaign ~* 'DS01' THEN 'DS01'
@@ -61,8 +61,7 @@ WITH last_updated_data as
             spend, impressions, clicks, 0 as add_to_cart, 0 as leads, purchases, 0 as "VS-01 WK", revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_keyword_performance') }}
         UNION ALL
-        SELECT channel, date, date_granularity, market, product, utm_campaign, campaign_type, utm_content, 
-            CASE WHEN channel = 'Google Ads' AND campaign_type_custom NOT IN ('Non Brand','Brand') THEN null ELSE utm_term,
+        SELECT channel, date, date_granularity, market, product, utm_campaign, campaign_type, utm_content, utm_term_adj as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
     GROUP BY channel, date, date_granularity, market, product, utm_campaign, campaign_type, utm_content, utm_term)
