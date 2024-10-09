@@ -14,7 +14,7 @@ WITH initial_data as
         CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions END as purchases, 
         CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions_value END as revenue
         FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}) USING (date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
-    GROUP BY 1,2,3,4,5,6,7)
+    GROUP BY 1,2,3,4,5,6,7),
     
 cleaned_data as 
     (SELECT *, {{ get_date_parts('date') }} FROM initial_data)
