@@ -5,12 +5,12 @@
 {% set date_granularity_list = ['day', 'week', 'month', 'quarter', 'year'] %}
   
 WITH last_updated_data as
-    (SELECT *, MAX(_fivetran_synced) OVER (PARTITION BY activation_date,channel,utm_campaign,utm_content,utm_term) as last_updated_date
+    (SELECT *, activation_date::date as date, MAX(_fivetran_synced) OVER (PARTITION BY activation_date,channel,utm_campaign,utm_content,utm_term) as last_updated_date
     FROM {{ source('s3_raw','lasttouch_performance') }} 
     WHERE _file ~* 'grouped'),
     
     initial_s3_data as 
-    (SELECT *, {{ get_date_parts('activation_date') }} FROM last_updated_data where _fivetran_synced = last_updated_date),
+    (SELECT *, {{ get_date_parts('date') }} FROM last_updated_data where _fivetran_synced = last_updated_date),
   
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
