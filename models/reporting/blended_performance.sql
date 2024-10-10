@@ -86,4 +86,4 @@ SELECT channel,
   revenue,
   ft_orders,
   lt_orders
-FROM paid_data
+FROM final_data
