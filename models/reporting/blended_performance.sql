@@ -15,8 +15,7 @@ WITH last_updated_data as
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
-            utm_campaign, utm_content, 
-            utm_term,
+            utm_campaign, utm_content, utm_term,
             CASE WHEN channel ~* 'meta' THEN 'Meta' WHEN channel ~* 'google' THEN 'Google Ads' END as channel,
             CASE WHEN utm_campaign ~* 'INTL' THEN 'INTL' ELSE 'US' END as market,
             CASE WHEN utm_campaign ~* 'DS01' THEN 'DS01'
@@ -35,6 +34,7 @@ WITH last_updated_data as
             END as campaign_type,
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
+        GROUP BY 1,2,3,4,5,6,7
         {% if not loop.last %}UNION ALL
         {% endif %}
     {% endfor %}),
