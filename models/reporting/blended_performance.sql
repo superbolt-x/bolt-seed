@@ -52,7 +52,7 @@ WITH last_updated_data as
             spend, impressions, link_clicks as clicks, add_to_cart, leads, purchases, "VS-01 WK", 0 as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','facebook_ad_performance') }}
         UNION ALL
-        SELECT 'Google Ads' as channel, date, date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign, campaign_type_custom as campaign_type, 
+        SELECT 'Google Ads' as channel, gc.date, gc.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign, campaign_type_custom as campaign_type, 
             null as utm_content, null as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks,
             0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
@@ -61,7 +61,7 @@ WITH last_updated_data as
         WHERE campaign_type_custom NOT IN ('Non Brand','Brand')
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
-        SELECT 'Google Ads' as channel, date, date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign, campaign_type_custom as campaign_type, 
+        SELECT 'Google Ads' as channel, gck.date, gck.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign, campaign_type_custom as campaign_type, 
             null as utm_content, keyword as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks,
             0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
