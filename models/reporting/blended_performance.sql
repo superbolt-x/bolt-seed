@@ -57,7 +57,7 @@ WITH last_updated_data as
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks,
             0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_campaign_performance') }} gc
-        LEFT JOIN s3_data utm ON gc.campaign_name = utm.google_campaign AND gc.date = utm.date AND gc.date_granularity = utm.date_granularity
+        LEFT JOIN (SELECT utm_campaign, google_campaign FROM s3_data) utm ON gc.campaign_name = utm.google_campaign 
         WHERE campaign_type_custom NOT IN ('Non Brand','Brand')
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
@@ -66,7 +66,7 @@ WITH last_updated_data as
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks,
             0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_keyword_performance') }} gck
-        LEFT JOIN s3_data utm ON gck.campaign_name = utm.google_campaign AND gck.date = utm.date AND gck.date_granularity = utm.date_granularity
+        LEFT JOIN (SELECT utm_campaign, google_campaign FROM s3_data) utm ON gck.campaign_name = utm.google_campaign 
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
         SELECT channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, 
