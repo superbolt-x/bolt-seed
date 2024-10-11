@@ -15,6 +15,12 @@ sources:
       - name: lasttouch_performance
         identifier: lasttouch_performance
 
+  - name: gsheet_raw
+    schema: gsheet_raw
+    tables:
+      - name: utm_campaign_list
+        identifier: utm_campaign_list
+
   - name: googleads_raw
     schema: googleads_raw
     tables:
