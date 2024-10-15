@@ -22,6 +22,7 @@ WITH last_updated_data as
             CASE WHEN utm_campaign ~* 'DS01' THEN 'DS01'
                 WHEN utm_campaign ~* 'VS01' THEN 'VS01'
                 WHEN utm_campaign ~* 'PDS08' THEN 'PDS08'
+                WHEN utm_campaign ~* 'HCP' THEN 'HCP'
                 ELSE 'Other'
             END as product,    
             CASE 
@@ -31,6 +32,8 @@ WITH last_updated_data as
                 WHEN (utm_campaign ~* 'Performance Max' OR utm_campaign ~* 'PMax') AND utm_campaign !~* 'amazon' THEN 'PMax'
                 WHEN utm_campaign ~* 'NB' AND utm_campaign !~* 'amazon' THEN 'Non Brand'
                 WHEN utm_campaign ~* 'Brand' AND utm_campaign !~* 'amazon' THEN 'Branded'
+                WHEN campaign_name ~* 'Prospect' OR campaign_name ~* 'Interest' THEN 'Prospecting'
+                WHEN campaign_name ~* 'Retarget' THEN 'Retargeting'
                 ELSE 'Other'
             END as campaign_type,
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
