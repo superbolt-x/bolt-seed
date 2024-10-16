@@ -32,8 +32,8 @@ WITH last_updated_data as
                 WHEN (utm_campaign ~* 'Performance Max' OR utm_campaign ~* 'PMax') AND utm_campaign !~* 'amazon' THEN 'PMax'
                 WHEN utm_campaign ~* 'NB' AND utm_campaign !~* 'amazon' THEN 'Non Brand'
                 WHEN utm_campaign ~* 'Brand' AND utm_campaign !~* 'amazon' THEN 'Branded'
-                WHEN campaign_name ~* 'Prospect' OR campaign_name ~* 'Interest' THEN 'Prospecting'
-                WHEN campaign_name ~* 'Retarget' THEN 'Retargeting'
+                WHEN utm_campaign ~* 'Prospect' OR utm_campaign ~* 'Interest' THEN 'Prospecting'
+                WHEN utm_campaign ~* 'Retarget' THEN 'Retargeting'
                 ELSE 'Other'
             END as campaign_type,
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
