@@ -50,7 +50,8 @@ WITH last_updated_data as
         COALESCE(SUM(add_to_cart),0) as add_to_cart, COALESCE(SUM(leads),0) as leads, COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM("VS-01 WK"),0) as "VS-01 WK",
         COALESCE(SUM(revenue),0) as revenue, COALESCE(SUM(ft_orders),0) as ft_orders, COALESCE(SUM(lt_orders),0) as lt_orders
     FROM
-        (SELECT 'Meta' as channel, date, date_granularity, null as market, product, null as google_campaign, campaign_name as utm_campaign, campaign_type_default as campaign_type,
+        (SELECT 'Meta' as channel, date, date_granularity, null as market, product, null as google_campaign, campaign_name as utm_campaign, 
+            CASE WHEN campaign_name ~* 'Prospect' OR campaign_name ~* 'Interest' THEN 'Prospecting' WHEN campaign_name ~* 'Retarget' THEN 'Retargeting' END as campaign_type,
             adset_name as utm_content, ad_name as utm_term,
             spend, impressions, link_clicks as clicks, add_to_cart, leads, purchases, "VS-01 WK", 0 as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','facebook_ad_performance') }}
