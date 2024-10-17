@@ -39,7 +39,7 @@ WITH last_updated_data as
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
         LEFT JOIN (SELECT utm_campaign::varchar, campaign_name, COUNT(*) FROM {{ source('gsheet_raw','utm_campaign_list') }} GROUP BY 1,2) USING(utm_campaign)
-        WHERE channel = 'Google Ads'
+        WHERE channel ~* 'google'
         GROUP BY 1,2,3,4,5,6,7,8
         {% if not loop.last %}UNION ALL
         {% endif %}
