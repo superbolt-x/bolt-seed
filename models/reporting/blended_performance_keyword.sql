@@ -59,7 +59,7 @@ WITH last_updated_data as
         GROUP BY 1,2,3,4,5,6,7,8,9
         UNION ALL
         SELECT channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_term,
-            0 as spend, 0 as impressions, 0 as clicks, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
+            0 as spend, 0 as impressions, 0 as clicks, 0 as purchases, 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
     GROUP BY channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_term)
     
