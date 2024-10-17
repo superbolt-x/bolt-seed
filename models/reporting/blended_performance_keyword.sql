@@ -56,7 +56,7 @@ WITH last_updated_data as
             COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_keyword_performance') }} gck
         LEFT JOIN (SELECT utm_campaign, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON gck.campaign_name = utm.google_campaign 
-        GROUP BY 1,2,3,4,5,6,7,8,9,10
+        GROUP BY 1,2,3,4,5,6,7,8,9
         UNION ALL
         SELECT channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
