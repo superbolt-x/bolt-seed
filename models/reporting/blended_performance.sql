@@ -62,7 +62,6 @@ WITH last_updated_data as
             0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_campaign_performance') }} gc
         LEFT JOIN (SELECT utm_campaign, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON gc.campaign_name = utm.google_campaign 
-        WHERE campaign_type_custom NOT IN ('Non Brand','Branded')
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         /*UNION ALL
         SELECT 'Google Ads' as channel, gck.date, gck.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign, campaign_type_custom as campaign_type, 
