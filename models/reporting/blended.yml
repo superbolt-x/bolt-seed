@@ -28,6 +28,10 @@ sources:
         identifier: keyword_performance_report
       - name: keyword_convtype_performance_report
         identifier: keyword_convtype_performance_report
+      - name: campaign_convtype_performance_report
+        identifier: campaign_convtype_performance_report
+      - name: ad_convtype_performance_report
+        identifier: ad_convtype_performance_report
 
   - name: reporting
     schema: reporting
@@ -38,3 +42,5 @@ sources:
         identifier: seed_googleads_campaign_performance
       - name: googleads_keyword_performance
         identifier: seed_googleads_keyword_performance
+      - name: bingads_campaign_performance
+        identifier: seed_bingads_campaign_performance
