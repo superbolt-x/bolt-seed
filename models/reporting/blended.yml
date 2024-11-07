@@ -50,3 +50,5 @@ sources:
     tables:
       - name: keyword_performance_daily_report
         identifier: keyword_performance_daily_report
+      - name: keyword_history
+        identifier: keyword_history
