@@ -54,7 +54,7 @@ WITH last_updated_data as
     {% endfor %}),
   
     final_data as
-    (SELECT channel, date::date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_term,
+    (SELECT channel, date::date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_term, label,
         COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, 
         COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, COALESCE(SUM(ft_orders),0) as ft_orders, COALESCE(SUM(lt_orders),0) as lt_orders
     FROM
@@ -77,7 +77,8 @@ WITH last_updated_data as
         SELECT channel, date, date_granularity, market, product, google_campaign::varchar, bing_campaign::varchar, utm_campaign::varchar, campaign_type::varchar, utm_term::varchar,
             0 as spend, 0 as impressions, 0 as clicks, 0 as purchases, 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
-    GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_term)
+    LEFT JOIN (SELECT DISTINCT label, keyword::varchar as utm_term FROM {{ source('gsheet_raw','keyword_labels') }}) USING (utm_term)
+    GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_term, label)
     
 SELECT channel, 
   date, 
@@ -89,6 +90,7 @@ SELECT channel,
   utm_campaign, 
   campaign_type, 
   utm_term,
+  label,
   spend,
   impressions,
   clicks,
