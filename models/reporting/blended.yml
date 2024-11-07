@@ -20,6 +20,8 @@ sources:
     tables:
       - name: utm_campaign_list
         identifier: utm_campaign_list
+      - name: keyword_labels
+        identifier: keyword_labels
 
   - name: googleads_raw
     schema: googleads_raw
