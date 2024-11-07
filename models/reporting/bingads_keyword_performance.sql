@@ -13,7 +13,7 @@ WITH initial_data as
   GROUP BY 1,2,3,4,5),
     
 cleaned_data as
-  (SELECT *, {{ get_date_parts('date') }} FROM initial_data),
+  (SELECT *, {{ get_date_parts('date') }} FROM initial_data)
   
 {%- for date_granularity in date_granularity_list %}    
   SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
