@@ -5,7 +5,7 @@
 {% set date_granularity_list = ['day', 'week', 'month', 'quarter', 'year'] %}
   
 WITH initial_data as 
-  (SELECT date::date as date, ad_group_id, campaign_id, name as keyword, match_type, 
+  (SELECT date::date as date, kp.ad_group_id, campaign_id, name as keyword, match_type, 
     COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(conversions),0) as purchases, 
     COALESCE(SUM(revenue),0) as revenue
   FROM {{ source('bingads_raw', 'keyword_performance_daily_report') }} kp
