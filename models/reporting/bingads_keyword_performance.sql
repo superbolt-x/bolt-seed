@@ -5,14 +5,14 @@
 {% set date_granularity_list = ['day', 'week', 'month', 'quarter', 'year'] %}
     
 WITH initial_data as 
-  (SELECT date::date as date, ad_group_id, campaign_id, name as keyword, match_type, 
+  (SELECT date::date as date, ad_group_id, campaign_id, keyword, match_type, 
     COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(conversions),0) as purchases, 
     COALESCE(SUM(revenue),0) as revenue
   FROM {{ source('bingads_raw', 'keyword_performance_daily_report') }}
   LEFT JOIN 
-    (SELECT id as keyword_id, ad_group_id, modified_time, MAX(modified_time) OVER (PARTITION BY id) as max_modified_time 
+    (SELECT id as keyword_id, ad_group_id, modified_time, name as keyword, match_type, MAX(modified_time) OVER (PARTITION BY id) as max_modified_time 
     FROM {{ source('bingads_raw', 'keyword_history') }}
-    GROUP BY 1,2,3) USING (keyword_id, ad_group_id)
+    GROUP BY 1,2,3,4,5) USING (keyword_id, ad_group_id)
   WHERE modified_time = max_modified_time
   GROUP BY 1,2,3,4,5),
     
