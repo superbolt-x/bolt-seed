@@ -44,6 +44,8 @@ sources:
         identifier: seed_googleads_keyword_performance
       - name: bingads_campaign_performance
         identifier: seed_bingads_campaign_performance
+      - name: bingads_keyword_performance
+        identifier: seed_bingads_keyword_performance
 
   - name: bingads_raw
     schema: bingads_raw
