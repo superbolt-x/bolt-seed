@@ -64,7 +64,7 @@ WITH last_updated_data as
             COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_keyword_performance') }} gck
         LEFT JOIN (SELECT utm_campaign, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON gck.campaign_name = utm.google_campaign 
-        GROUP BY 1,2,3,4,5,6,7,8,9
+        GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
         SELECT 'Bing' as channel, bk.date, bk.date_granularity, country as market, product, null as google_campaign, bing_campaign, utm_campaign, 
             campaign_type_custom as campaign_type, keyword as utm_term,
@@ -72,7 +72,7 @@ WITH last_updated_data as
             COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','bingads_keyword_performance') }} bk
         LEFT JOIN (SELECT utm_campaign, bing_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON bk.campaign_name = utm.bing_campaign 
-        GROUP BY 1,2,3,4,5,6,7,8,9
+        GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
         SELECT channel, date, date_granularity, market, product, google_campaign::varchar, bing_campaign::varchar, utm_campaign::varchar, campaign_type::varchar, utm_term::varchar,
             0 as spend, 0 as impressions, 0 as clicks, 0 as purchases, 0 as revenue, ft_orders, lt_orders
