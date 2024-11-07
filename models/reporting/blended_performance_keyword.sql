@@ -43,10 +43,14 @@ WITH last_updated_data as
             END as campaign_type,
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
-        LEFT JOIN (SELECT CASE WHEN channel ~* 'google' THEN campaign_name::varchar END as google_campaign, CASE WHEN channel ~* 'bing' THEN campaign_name::varchar END as bing_campaign, 
-                utm_campaign::varchar, COUNT(*) 
+        LEFT JOIN 
+            (SELECT campaign_name::varchar as google_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
-            GROUP BY 1,2,3) USING(utm_campaign)
+            WHERE channel = 'google') USING(utm_campaign)
+        LEFT JOIN 
+            (SELECT campaign_name::varchar as bing_campaign, utm_campaign::varchar
+            FROM {{ source('gsheet_raw','utm_campaign_list') }} 
+            WHERE channel = 'bing') USING(utm_campaign)
         WHERE (channel ~* 'google' OR channel ~* 'bing')
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         {% if not loop.last %}UNION ALL
