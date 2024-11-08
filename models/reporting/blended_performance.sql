@@ -71,7 +71,7 @@ WITH last_updated_data as
         SELECT 'Google Ads' as channel, gc.date, gc.date_granularity, country as market, product, google_campaign::varchar, null as bing_campaign, utm_campaign::varchar, 
             campaign_type_custom as campaign_type, null as utm_content, null as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
-            0 as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
+            add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_campaign_performance') }} gc
         LEFT JOIN (SELECT utm_campaign::varchar, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON gc.campaign_name = utm.google_campaign 
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
