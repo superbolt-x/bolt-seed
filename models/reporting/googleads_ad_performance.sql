@@ -38,7 +38,7 @@ clicks,
 purchaseadwordspixel as purchases,
 purchaseadwordspixel_value as revenue,
 checkout_initiated,
-add_to_cart
+addtocart as add_to_cart
 FROM {{ ref('googleads_performance_by_ad') }}
 LEFT JOIN 
     (SELECT DATE_TRUNC('day',date) as date, 'day' as date_granularity,
