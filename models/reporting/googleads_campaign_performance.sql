@@ -39,7 +39,7 @@ search_impression_share,
 search_budget_lost_impression_share,
 search_rank_lost_impression_share,
 checkout_initiated,
-add_to_cart
+addtocart as add_to_cart
 FROM {{ ref('googleads_performance_by_campaign') }}
 LEFT JOIN 
     (SELECT DATE_TRUNC('day',date) as date, 'day' as date_granularity,
