@@ -38,7 +38,8 @@ purchaseadwordspixel_value as revenue,
 search_impression_share,
 search_budget_lost_impression_share,
 search_rank_lost_impression_share,
-checkout_initiated
+checkout_initiated,
+add_to_cart
 FROM {{ ref('googleads_performance_by_campaign') }}
 LEFT JOIN 
     (SELECT DATE_TRUNC('day',date) as date, 'day' as date_granularity,
