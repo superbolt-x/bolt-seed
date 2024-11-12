@@ -11,7 +11,7 @@ WITH last_updated_data as
     ),
     
     initial_s3_data as 
-    (SELECT *, {{ get_date_parts('activation_date') }} FROM last_updated_data),
+    (SELECT *, {{ get_date_parts('activation_date') }} FROM last_updated_data WHERE utm_campaign IS NOT NULL),
   
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
@@ -45,13 +45,13 @@ WITH last_updated_data as
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
         LEFT JOIN 
-            (SELECT campaign_name::varchar as google_campaign, utm_campaign::varchar
+            (SELECT 'Google Ads' as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
-            WHERE channel = 'google') USING(utm_campaign)
+            WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         LEFT JOIN 
-            (SELECT campaign_name::varchar as bing_campaign, utm_campaign::varchar
+            (SELECT 'Bing' as channel, campaign_name::varchar as bing_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
-            WHERE channel = 'bing') USING(utm_campaign)
+            WHERE channel = 'bing' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         WHERE (channel ~* 'google' OR channel ~* 'bing')
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         {% if not loop.last %}UNION ALL
