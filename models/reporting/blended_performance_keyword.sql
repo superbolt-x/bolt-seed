@@ -22,7 +22,7 @@ WITH last_updated_data as
                 WHEN channel ~* 'google' THEN 'Google Ads' 
                 WHEN channel ~* 'youtube' THEN 'Youtube' 
                 WHEN channel ~* 'bing' THEN 'Bing' 
-            END as channel,
+            END as channel_adj,
             CASE WHEN utm_campaign ~* 'INTL' THEN 'INTL' ELSE 'US' END as market,
             CASE WHEN utm_campaign ~* 'DS01' THEN 'DS01'
                 WHEN utm_campaign ~* 'VS01' THEN 'VS01'
@@ -45,11 +45,11 @@ WITH last_updated_data as
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
         LEFT JOIN 
-            (SELECT 'Google Ads' as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
+            (SELECT 'GOOGLE' as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         LEFT JOIN 
-            (SELECT 'Bing' as channel, campaign_name::varchar as bing_campaign, utm_campaign::varchar
+            (SELECT 'BING' as channel, campaign_name::varchar as bing_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'bing' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         WHERE (channel ~* 'google' OR channel ~* 'bing')
