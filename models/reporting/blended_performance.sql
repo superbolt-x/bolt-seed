@@ -32,6 +32,7 @@ WITH last_updated_data as
             END as product,    
             CASE 
                 WHEN google_campaign ~* 'amazon' OR bing_campaign ~* 'amazon' THEN 'Amazon'
+                WHEN advertising_channel_type = 'DEMAND_GEN' THEN 'Demand Gen'
                 WHEN google_campaign ~* 'YT' OR channel ~* 'youtube' THEN 'Youtube'
                 WHEN (google_campaign ~* 'Shopping' AND google_campaign ~* 'Brand') OR (bing_campaign ~* 'Shopping' AND bing_campaign ~* 'Brand') THEN 'Shopping - Brand'
                 WHEN google_campaign ~* 'Shopping' AND google_campaign !~* 'Brand' THEN 'Shopping - Non Brand'
@@ -52,6 +53,10 @@ WITH last_updated_data as
             (SELECT 'BING' as channel, campaign_name::varchar as bing_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'bing' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
+        LEFT JOIN 
+            (SELECT advertising_channel_type, campaign_id::varchar as utm_campaign
+            FROM {{ source('googleads_base','googleads_campaigns') }} 
+            WHERE advertising_channel_type = 'DEMAND_GEN' AND utm_campaign IS NOT NULL) USING(utm_campaign)
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         {% if not loop.last %}UNION ALL
         {% endif %}
