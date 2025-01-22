@@ -20,6 +20,7 @@ case
 end as product,    
 case 
     when campaign_name ~* 'amazon' then 'Amazon'
+    when campaign_name ~* 'demand' then 'Demand Gen'
     when campaign_name ~* 'YT' then 'Youtube'
     when campaign_name ~* 'Shopping' and campaign_name ~* 'Brand' then 'Shopping - Brand'
     when campaign_name ~* 'Shopping' and campaign_name !~* 'Brand' then 'Shopping - Non Brand'
