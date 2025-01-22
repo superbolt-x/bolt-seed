@@ -56,3 +56,9 @@ sources:
         identifier: keyword_performance_daily_report
       - name: keyword_history
         identifier: keyword_history
+
+  - name: googleads_base
+    schema: googleads_base
+    tables:
+      - name: googleads_campaigns
+        identifier: googleads_campaigns
