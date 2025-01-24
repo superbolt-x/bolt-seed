@@ -17,7 +17,7 @@ WITH last_updated_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
             utm_campaign::varchar, google_campaign, bing_campaign,
-            utm_content, utm_term,
+            utm_content, CASE WHEN utm_term ~* '-e|-b|-p' AND channel ~* 'google' THEN SPLIT_PART(utm_term,'-',1) ELSE utm_term END as utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
                 WHEN channel ~* 'google' THEN 'Google Ads' 
                 WHEN channel ~* 'youtube' THEN 'Youtube' 
@@ -79,7 +79,7 @@ WITH last_updated_data as
         LEFT JOIN (SELECT utm_campaign, bing_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON bk.campaign_name = utm.bing_campaign 
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         UNION ALL
-        SELECT channel_adj as channel, date, date_granularity, market, product, google_campaign::varchar, bing_campaign::varchar, utm_campaign::varchar, campaign_type::varchar, utm_term::varchar,
+        SELECT channel_adj as channel, date, date_granularity, market, product, google_campaign::varchar, bing_campaign::varchar, utm_campaign::varchar, campaign_type::varchar, utm_term_adj::varchar as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as purchases, 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
     LEFT JOIN (SELECT DISTINCT label, keyword::varchar as utm_term FROM {{ source('gsheet_raw','keyword_labels') }}) USING (utm_term)
