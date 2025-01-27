@@ -11,7 +11,7 @@ WITH last_updated_data as
     ),
     
     initial_s3_data as 
-    (SELECT *, {{ get_date_parts('activation_date') }} FROM last_updated_data WHERE utm_campaign IS NOT NULL),
+    (SELECT *, CASE WHEN utm_campaign ~* 'ds01-demandgen-video' THEN channel = 'GOOGLE' ELSE channel END as channel, {{ get_date_parts('activation_date') }} FROM last_updated_data WHERE utm_campaign IS NOT NULL),
   
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
@@ -54,7 +54,7 @@ WITH last_updated_data as
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'bing' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         LEFT JOIN 
-            (SELECT advertising_channel_type, campaign_id::varchar as utm_campaign
+            (SELECT advertising_channel_type, campaign_name::varchar as utm_campaign
             FROM {{ source('googleads_base','googleads_campaigns') }} 
             WHERE advertising_channel_type = 'DEMAND_GEN' AND utm_campaign IS NOT NULL) USING(utm_campaign)
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
