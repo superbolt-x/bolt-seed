@@ -10,12 +10,13 @@ WITH initial_data as
         COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, COALESCE(SUM(add_to_cart),0) as add_to_cart
     FROM {{ source('googleads_raw', 'keyword_performance_report') }}
     LEFT JOIN 
-        (SELECT _fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id,
-        CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions END as purchases, 
-        CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions_value END as revenue,
-        CASE WHEN conversion_action_name = 'Add to cart' THEN conversions END as add_to_cart
-        FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}) 
-    USING (_fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
+        (SELECT date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id,
+        COALESCE(SUM(CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions END),0) as purchases, 
+        COALESCE(SUM(CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions_value END),0) as revenue,
+        COALESCE(SUM(CASE WHEN conversion_action_name = 'Add to cart' THEN conversions END),0) as add_to_cart
+        FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}
+        GROUP BY 1,2,3,4,5,6,7) 
+    USING (date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
     GROUP BY 1,2,3,4,5,6,7),
     
 cleaned_data as 
