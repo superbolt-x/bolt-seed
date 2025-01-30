@@ -11,8 +11,8 @@ WITH initial_data as
     FROM {{ source('googleads_raw', 'keyword_performance_report') }}
     LEFT JOIN 
         (SELECT _fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id,
-        CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions END as purchases, 
-        CASE WHEN conversion_action_name = 'Purchase (Adwords Pixel)' THEN conversions_value END as revenue,
+        CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions END as purchases, 
+        CASE WHEN conversion_action_name ~* 'Purchase' AND conversion_action_name ~* 'Adwords' THEN conversions_value END as revenue,
         CASE WHEN conversion_action_name = 'Add to cart' THEN conversions END as add_to_cart
         FROM {{ source('googleads_raw', 'keyword_convtype_performance_report') }}) 
     USING (_fivetran_id,date,keyword_text,keyword_match_type,ad_group_name,ad_group_id,campaign_name,campaign_id)
