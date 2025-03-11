@@ -33,7 +33,7 @@ WITH last_updated_data as
             END as product,    
             CASE 
                 WHEN google_campaign ~* 'amazon' OR bing_campaign ~* 'amazon' THEN 'Amazon'
-                WHEN advertising_channel_type = 'DEMAND_GEN' THEN 'Demand Gen'
+                WHEN google_campaign ~* 'demand' OR utm_campaign ~* 'demand' THEN 'Demand Gen'
                 WHEN google_campaign ~* 'YT' OR channel ~* 'youtube' THEN 'Youtube'
                 WHEN (google_campaign ~* 'Shopping' AND google_campaign ~* 'Brand') OR (bing_campaign ~* 'Shopping' AND bing_campaign ~* 'Brand') THEN 'Shopping - Brand'
                 WHEN google_campaign ~* 'Shopping' AND google_campaign !~* 'Brand' THEN 'Shopping - Non Brand'
@@ -47,17 +47,13 @@ WITH last_updated_data as
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
         LEFT JOIN 
-            (SELECT 'GOOGLE' as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
+            (SELECT CASE WHEN utm_campaign ~* 'demandgen' THEN 'YOUTUBE' ELSE 'GOOGLE' END as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         LEFT JOIN 
             (SELECT 'BING' as channel, campaign_name::varchar as bing_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'bing' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
-        LEFT JOIN 
-            (SELECT advertising_channel_type, campaign_name::varchar as utm_campaign
-            FROM {{ source('googleads_base','googleads_campaigns') }} 
-            WHERE advertising_channel_type = 'DEMAND_GEN' AND utm_campaign IS NOT NULL) USING(utm_campaign)
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         {% if not loop.last %}UNION ALL
         {% endif %}
