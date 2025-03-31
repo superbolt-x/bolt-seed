@@ -4,15 +4,8 @@
 
 {% set date_granularity_list = ['day', 'week', 'month', 'quarter', 'year'] %}
   
-WITH last_updated_data as
-    (SELECT _file, _line, _modified, _fivetran_synced, activation_date, activation_month, lta_subs, utm_term, utm_campaign, fta_subs, utm_content,
-        CASE WHEN utm_campaign ~* 'demandgen' THEN 'YOUTUBE' ELSE channel END as channel
-    FROM {{ source('s3_raw','lasttouch_performance') }} 
-    WHERE _modified IN (SELECT MAX(_modified) FROM {{ source('s3_raw','lasttouch_performance') }} )
-    ),
-    
-    initial_s3_data as 
-    (SELECT *, {{ get_date_parts('activation_date') }} FROM last_updated_data WHERE utm_campaign IS NOT NULL),
+WITH initial_s3_data as 
+    (SELECT *, {{ get_date_parts('activation_date') }} FROM {{ source('s3_raw','lasttouch_performance') }}  WHERE utm_campaign IS NOT NULL),
   
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
