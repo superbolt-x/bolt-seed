@@ -11,36 +11,7 @@ WITH initial_s3_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
             utm_campaign::varchar, google_campaign, bing_campaign,
-            CASE 
-                when utm_content = 'prospecting2' then 'Prospecting 2'
-                when utm_content = 'prospecting' then 'Prospecting'
-                else REPLACE(utm_content, 'DS01_DG_US CAN', 'DS01_DG_US+CAN')
-            end as utm_content_adj,
-            CASE
-                WHEN utm_term = 'Bloating_30_FINECUT_A_Broadcast-Video Image' THEN 'Bloating_30_FINECUT_A_Broadcast'
-                WHEN utm_term = 'DD_SEE01_ASMRUnboxing_CantPoop_V1-Video_In-Stream' THEN 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video_In-Stream'
-                WHEN utm_term = 'DD_SEE01_ASMRUnboxing_CantPoop_V1-Video_Shorts' THEN 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video_Shorts'
-                WHEN utm_term = 'DD_SEE02_T2CListicle_PoopEveryday_4x5_V4-Video' THEN 'DD_SEE02_T2CListicle_PoopEveryday_4x5_V4-Video_In-Feed'
-                WHEN utm_term = 'DD_SEE02_T2CListicle_PoopEveryday_4x5_V4-Video Image' THEN 'DD_SEE02_T2CListicle_PoopEveryday_4x5_V4-Video_In-Feed'
-                WHEN utm_term = 'DD-SEE20-YTRecuts-T2CListicle-De-bloatFast-C2-16x9-Video' THEN 'DD_SEE20_YTRecuts_T2CListicle_De-bloatFast_C2_16x9'
-                WHEN utm_term = 'DH_Const_UGC_Stomach_Kaleina_Video_39s_DD-Video_In-Stream' THEN 'DH_Const_UGC_Stomach_Kaleina_Video_39s_DD_9x16-Video_In-Stream'
-                WHEN utm_term = 'DH_Const_UGC_Stomach_Kaleina_Video_39s_DD-Video_shorts' THEN 'DH_Const_UGC_Stomach_Kaleina_Video_39s_DD_9x16-Video_Shorts'
-                WHEN utm_term = 'DH_Poop_UGC_WK_Video_17s_DD_V2_NOW25-Video_In-Stream' THEN 'DH_Poop_UGC_WK_Video_17s_DD_V2_NOW25_4x5_9x16-Video_In-Stream'
-                WHEN utm_term = 'DS-01_DemandGenAsset_V2_20250113_1200x628-Video Image' THEN 'DS-01_DemandGenAsset_V2_20250113_1200x628'
-                WHEN utm_term = 'DS-01_DemandGenAsset_V3_PoopingEveryDay_20250113_1200x628-Video Image' THEN 'DS-01_DemandGenAsset_V3_PoopingEveryDay_20250113_1200x628'
-                WHEN utm_term = 'DS-01_FastSustainedReliefMessagingYoutube_V1-Video Image' THEN 'DS-01_FastSustainedReliefMessagingYoutube_V1-Video+Image'
-                WHEN utm_term = 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080-Video' THEN 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080'
-                WHEN utm_term = 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video Image' THEN 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video+Image'
-                WHEN utm_term = 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video Image' THEN 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video+Image'
-                WHEN utm_term = 'DS-01_QualityOfLifeExploration_Static_V1_20240719_1080x1080-Video Image' THEN 'DS-01_QualityOfLifeExploration_Static_V1_20240719_1080x1080-Video+Image'
-                WHEN utm_term = 'DS-01_QualityOfLifeExploration_Static_V2_20240719_1080x1080-Video Image' THEN 'DS-01_QualityOfLifeExploration_Static_V2_20240719_1080x1080-Video+Image'
-                WHEN utm_term = 'DS-01_SurvivabilityItr_op1_20240327_1x1-Video' THEN 'DS-01_SurvivabilityItr_op1_20240327_1x1'
-                WHEN utm_term = 'DS-01_SurvivabilityItr_op1_20240327_1x1-Video Image' THEN 'DS-01_SurvivabilityItr_op1_20240327_1x1'
-                WHEN utm_term = 'DS01_KOLYouTubeTesting_V1_NOW25-Video_In-Stream' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_In-Stream'
-                WHEN utm_term = 'DS01_KOLYouTubeTesting_V1_NOW25-Video_Shorts' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts'
-                WHEN utm_term = 'SEED_REVEAL_30_Fem_02-Video' THEN 'SEED_REVEAL_30_Fem_02'
-                ELSE utm_term
-            END AS utm_term_adj,
+            utm_content, utm_term,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
                 WHEN channel ~* 'google' THEN 'Google Ads' 
                 WHEN channel ~* 'youtube' THEN 'Youtube' 
@@ -104,10 +75,10 @@ WITH initial_s3_data as
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         UNION ALL
         SELECT 'Google Ads' as channel, yt.date, yt.date_granularity, country as market, product, campaign_name::varchar as google_campaign, null as bing_campaign, utm_campaign::varchar, 
-            campaign_type_custom as campaign_type, ad_group_name::varchar as utm_content, ad_name::varchar as utm_term,
+            campaign_type_custom as campaign_type, null as utm_content, null as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
             COALESCE(SUM(add_to_cart),0) as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
-        FROM {{ source('reporting','googleads_ad_performance') }} yt
+        FROM {{ source('reporting','googleads_campaign_performance') }} yt
         LEFT JOIN (SELECT utm_campaign::varchar, COUNT(*) FROM s3_data GROUP BY 1) utm ON yt.campaign_id = utm.utm_campaign 
         WHERE campaign_type_custom = 'Youtube'
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
@@ -122,8 +93,8 @@ WITH initial_s3_data as
         UNION ALL
         SELECT CASE WHEN channel_adj::varchar = 'Google Ads' OR channel_adj::varchar = 'Youtube' THEN 'Google Ads' ELSE channel_adj::varchar END as channel, date, date_granularity, market, product, 
             google_campaign::varchar, bing_campaign::varchar, utm_campaign::varchar, campaign_type::varchar, 
-            CASE WHEN channel_adj = 'Google Ads' OR channel_adj = 'Bing' THEN null ELSE utm_content_adj END as utm_content, 
-            CASE WHEN channel_adj = 'Google Ads' OR channel_adj = 'Bing' THEN null ELSE utm_term_adj END as utm_term,
+            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_content END as utm_content, 
+            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_term END as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as checkout_initiated, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
     GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_content, utm_term)
