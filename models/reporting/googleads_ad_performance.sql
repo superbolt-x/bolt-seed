@@ -31,6 +31,8 @@ case
 end as campaign_type_custom,
 ad_group_name,
 ad_group_id,
+ad_name,
+ad_id,
 date,
 date_granularity,
 spend,
