@@ -108,7 +108,7 @@ WITH initial_s3_data as
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
             COALESCE(SUM(add_to_cart),0) as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
         FROM {{ source('reporting','googleads_ad_performance') }} yt
-        LEFT JOIN (SELECT utm_campaign::varchar, COUNT(*) FROM s3_data GROUP BY 1) utm ON yt.campaign_name = utm.google_campaign 
+        LEFT JOIN (SELECT utm_campaign::varchar, google_campaign, COUNT(*) FROM s3_data GROUP BY 1) utm ON yt.campaign_name = utm.google_campaign 
         WHERE (campaign_type_custom = 'Youtube' or campaign_type_custom = 'Demand Gen')
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         UNION ALL
