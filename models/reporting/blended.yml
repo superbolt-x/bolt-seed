@@ -42,6 +42,8 @@ sources:
         identifier: seed_facebook_ad_performance
       - name: googleads_campaign_performance
         identifier: seed_googleads_campaign_performance
+      - name: googleads_ad_performance
+        identifier: seed_googleads_ad_performance
       - name: googleads_keyword_performance
         identifier: seed_googleads_keyword_performance
       - name: bingads_campaign_performance
