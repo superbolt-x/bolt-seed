@@ -62,8 +62,7 @@ WITH initial_s3_data as
                 WHEN utm_term = 'SEED_REVEAL_30_Fem_02-Video' THEN 'SEED_REVEAL_30_Fem_02'
                 WHEN utm_term = 'SEED_REVEAL_30_Fem_02-Video_In-Feed' THEN 'SEED_REVEAL_30_Fem_02'
                 WHEN utm_term = 'SEED_REVEAL_30_Fem_02-Video_In-Stream' THEN 'SEED_REVEAL_30_Fem_02'
-                else REPLACE(utm_term, 'Video Image', 'Video+Image')
-                ELSE utm_term
+                ELSE REPLACE(utm_term, 'Video Image', 'Video+Image')
             END AS utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
                 WHEN channel ~* 'google' THEN 'Google Ads' 
