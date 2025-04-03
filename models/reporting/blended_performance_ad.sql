@@ -54,14 +54,14 @@ WITH initial_s3_data as
                 ELSE 'Other'
             END as product,    
             CASE 
-                WHEN google_campaign ~* 'amazon' OR bing_campaign ~* 'amazon' THEN 'Amazon'
+                WHEN google_campaign ~* 'amazon' THEN 'Amazon'
                 WHEN google_campaign ~* 'demand' OR utm_campaign ~* 'demand' THEN 'Demand Gen'
                 WHEN google_campaign ~* 'YT' OR channel ~* 'youtube' THEN 'Youtube'
-                WHEN (google_campaign ~* 'Shopping' AND google_campaign ~* 'Brand') OR (bing_campaign ~* 'Shopping' AND bing_campaign ~* 'Brand') THEN 'Shopping - Brand'
+                WHEN (google_campaign ~* 'Shopping' AND google_campaign ~* 'Brand') THEN 'Shopping - Brand'
                 WHEN google_campaign ~* 'Shopping' AND google_campaign !~* 'Brand' THEN 'Shopping - Non Brand'
                 WHEN google_campaign ~* 'Performance Max' OR google_campaign ~* 'PMax' THEN 'PMax'
-                WHEN google_campaign ~* 'NB' OR bing_campaign ~* 'NB' THEN 'Non Brand'
-                WHEN google_campaign ~* 'Brand' OR bing_campaign ~* 'Brand' THEN 'Branded'
+                WHEN google_campaign ~* 'NB' THEN 'Non Brand'
+                WHEN google_campaign ~* 'Brand' THEN 'Branded'
                 WHEN utm_campaign ~* 'Prospect' OR utm_campaign ~* 'Interest' THEN 'Prospecting'
                 WHEN utm_campaign ~* 'Retarget' THEN 'Retargeting'
                 ELSE 'Other'
