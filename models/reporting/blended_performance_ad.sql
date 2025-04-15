@@ -193,7 +193,7 @@ WITH initial_s3_data as
                 WHEN ad_name ~* 'DH_2in1_Lifestyle_Video_HQ_42s_9x16' THEN 'DH_2in1_Lifestyle_Video_HQ_42s_9x16-Video'
                 WHEN ad_name ~* 'DH_Bloat_Claim_Jar_Static_HQ' THEN 'DH_Bloat_Claim_Jar_Static_HQ'
                 WHEN ad_name ~* 'DH_Gas_Claim_Capsule_Static_HQ' THEN 'DH_Gas_Claim_Capsule_Static_HQ'
-                WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3' THEN 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3'
+                WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3' THEN 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
                 ELSE ad_name::varchar
             END as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
