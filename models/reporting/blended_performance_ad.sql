@@ -87,6 +87,7 @@ WITH initial_s3_data as
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_1080x1080' THEN 'DS01_KOLYouTubeTesting_V1_1x1_16x9-Video'
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_In-Stream' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_In-Stream'
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts'
+                WHEN utm_term ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
             ELSE utm_term
             END AS utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
@@ -194,6 +195,7 @@ WITH initial_s3_data as
                 WHEN ad_name ~* 'DH_Bloat_Claim_Jar_Static_HQ' THEN 'DH_Bloat_Claim_Jar_Static_HQ'
                 WHEN ad_name ~* 'DH_Gas_Claim_Capsule_Static_HQ' THEN 'DH_Gas_Claim_Capsule_Static_HQ'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3' THEN 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
+                WHEN ad_name ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
                 ELSE ad_name::varchar
             END as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
