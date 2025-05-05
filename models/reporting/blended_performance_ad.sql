@@ -19,6 +19,7 @@ WITH initial_s3_data as
                 else REPLACE(utm_content, 'DS01_DG_US CAN', 'DS01_DG_US+CAN')
             end as utm_content_adj,
             CASE 
+                WHEN utm_term ~* '5.1.25_DS-01_Testimonial_Bloating_Short_V1_9x16' THEN '5.1.25_DS_01_Testimonial_Bloating_Short_V1_9x16'
                 WHEN utm_term ~* 'Bloating_30_FINECUT_A_Broadcast' THEN 'Bloating_30_FINECUT_A_Broadcast'
                 WHEN utm_term ~* 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video' THEN 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video'
                 WHEN utm_term ~* 'DD_SEE02_T2CListicle_PoopEveryday_V4_4x5-Video' THEN 'DD_SEE02_T2CListicle_PoopEveryday_V4_4x5-Video'
@@ -134,6 +135,7 @@ WITH initial_s3_data as
     SELECT 'Google Ads' as channel, yt.date, yt.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign::varchar, 
             campaign_type_custom as campaign_type, ad_group_name::varchar as utm_content,  
             CASE 
+                WHEN ad_name ~* '5.1.25_DS-01_Testimonial_Bloating_Short_V1_9x16' THEN '5.1.25_DS_01_Testimonial_Bloating_Short_V1_9x16'
                 WHEN ad_name ~* 'Bloating_30_FINECUT_A_Broadcast' THEN 'Bloating_30_FINECUT_A_Broadcast'
                 WHEN ad_name ~* 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video' THEN 'DD_SEE01_ASMRUnboxing_CantPoop_V1_9x16-Video'
                 WHEN ad_name ~* 'DD_SEE02_T2CListicle_PoopEveryday_V4_4x5-Video' THEN 'DD_SEE02_T2CListicle_PoopEveryday_V4_4x5-Video'
