@@ -236,7 +236,7 @@ WITH initial_s3_data as
     UNION ALL 
     SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status,
     spend, impressions, clicks, checkout_initiated, add_to_cart, leads, purchases, revenue, ft_orders, lt_orders
-    FROM lt_data)
+    FROM lt_final_data)
     GROUP BY channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status)
     
 SELECT channel, 
