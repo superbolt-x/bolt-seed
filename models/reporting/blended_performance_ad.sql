@@ -51,6 +51,7 @@ WITH initial_s3_data as
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080' THEN 'DS_01_Member_Stat_Hook_V1_20240716_1080x1080'
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_9x16_1x1-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16_1x1-Video'
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_9x16-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16-Video'
+		WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage_DisplayNetwork' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4-Video'
@@ -92,7 +93,6 @@ WITH initial_s3_data as
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_In-Stream' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_InStream'
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts'
                 WHEN utm_term ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
-		WHEN utm_term ~* 'DS-01_DemandGenAsset_V3_PoopingEveryDay-TopScaledImage_DisplayNetwork' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
             ELSE utm_term
             END AS utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
@@ -169,6 +169,7 @@ WITH initial_s3_data as
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080' THEN 'DS_01_Member_Stat_Hook_V1_20240716_1080x1080'
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_9x16_1x1-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16_1x1-Video'
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_9x16-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16-Video'
+		WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage_DisplayNetwork' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4-Video'
@@ -197,7 +198,6 @@ WITH initial_s3_data as
                 WHEN ad_name ~* '4.25.25_DH_Bloat_Claim_Jar_Static_HQ_V2' THEN '4.25.25_DH_Bloat_Claim_Jar_Static_HQ_V2'
                 WHEN ad_name ~* 'DH_Bloat_Claim_Jar_Static_HQ' THEN 'DH_Bloat_Claim_Jar_Static_HQ'
                 WHEN ad_name ~* 'DH_Gas_Claim_Capsule_Static_HQ' THEN 'DH_Gas_Claim_Capsule_Static_HQ'
-                WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
                 WHEN ad_name ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
                 ELSE ad_name::varchar
             END as utm_term, campaign_status, ad_status,
