@@ -96,7 +96,7 @@ WITH initial_s3_data as
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11
         UNION ALL
         SELECT CASE WHEN channel_adj::varchar = 'Google Ads' OR channel_adj::varchar = 'Youtube' THEN 'Google Ads' ELSE channel_adj::varchar END as channel, date, date_granularity, market, product, 
-            CASE WHEN utm_content_adj::varchar = 'DS01_DG_US+CAN_AllGenders_18-65_Cooking_AllPlacements_TopicTargeting_Cooking' 
+            CASE WHEN utm_content::varchar = 'DS01_DG_US CAN_AllGenders_18-65_Cooking_AllPlacements_TopicTargeting_Cooking' 
                     AND google_campaign::varchar = 'DS01 - Demand Gen - Video - US - All Placements - Audience Segmentation Test'
 		            THEN 'DS01 - Demand Gen - Video - US - All Placements - Topic Targeting' 
 		        ELSE google_campaign::varchar
