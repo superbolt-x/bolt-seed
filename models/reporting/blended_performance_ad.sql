@@ -16,8 +16,8 @@ WITH initial_s3_data as
                 when utm_content = 'prospecting' then 'Prospecting'
                 when utm_content = 'infeed' then 'In-Feed'
                 when utm_content = 'instream' then 'In-Stream'
-		when utm_content ~* '_BAU ' OR utm_content ~* '_TopicStack ' THEN REPLACE(REPLACE(utm_content, '_BAU ','_BAU+'),'_TopicStack ','_TopicStack+')
-                else REPLACE(utm_content, 'DS01_DG_US CAN', 'DS01_DG_US+CAN')
+		when utm_content ~* '_BAU ' OR utm_content ~* '_TopicStack ' THEN REPLACE(REPLACE(REPLACE(utm_content, '_BAU ','_BAU+'),'_TopicStack ','_TopicStack+'),'_US CAN', '_US+CAN')
+                else REPLACE(utm_content, '_US CAN', '_US+CAN')
             end as utm_content_adj,
             CASE 
                 WHEN utm_term ~* '5.1.25_DS-01_Testimonial_Bloating_Short_V1_9x16' THEN '5.1.25_DS_01_Testimonial_Bloating_Short_V1_9x16'
