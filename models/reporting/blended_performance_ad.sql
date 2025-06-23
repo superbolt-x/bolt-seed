@@ -16,7 +16,7 @@ WITH initial_s3_data as
                 when utm_content = 'prospecting' then 'Prospecting'
                 when utm_content = 'infeed' then 'In-Feed'
                 when utm_content = 'instream' then 'In-Stream'
-		when utm_content ~* '_BAU ' THEN REPLACE(utm_content, '_BAU ','_BAU+')
+		when utm_content ~* '_BAU ' OR utm_content ~* '_TopicStack ' THEN REPLACE(REPLACE(utm_content, '_BAU ','_BAU+'),'_TopicStack ','_TopicStack+')
                 else REPLACE(utm_content, 'DS01_DG_US CAN', 'DS01_DG_US+CAN')
             end as utm_content_adj,
             CASE 
