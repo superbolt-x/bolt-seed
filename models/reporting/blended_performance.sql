@@ -103,7 +103,7 @@ WITH initial_s3_data as
 		ELSE REPLACE(utm_campaign,'A SC','A+SC') 
 	    END as utm_campaign, 
 	    campaign_type::varchar, 
-            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_content END as utm_content, 
+            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE REPLACE(REPLACE(utm_content,'A SC','A+SC'),'USA CAN','USA+CAN') END as utm_content, 
             CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_term END as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as checkout_initiated, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
