@@ -102,7 +102,9 @@ WITH initial_s3_data as
 		        ELSE google_campaign::varchar
 	        END as google_campaign,
             bing_campaign::varchar, 
-	    REPLACE(utm_campaign,'A SC','A+SC') as utm_campaign, 
+	    CASE WHEN utm_campaign ~* 'Amplified Budget' AND utm_campaign !~* 'Mid-Performing' THEN 'DS01 - Prospect - A+SC Campaign - 7DC - KOL - Top-Performing Creators - Amplified Budget Strategy'
+		ELSE REPLACE(utm_campaign,'A SC','A+SC') 
+	    END as utm_campaign, 
 	    campaign_type::varchar, 
             CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_content END as utm_content, 
             CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_term END as utm_term,
@@ -119,8 +121,8 @@ SELECT channel,
   bing_campaign,
   utm_campaign, 
   campaign_type, 
-  --utm_content, 
-  --utm_term,
+  utm_content, 
+  utm_term,
   spend,
   impressions,
   clicks,
