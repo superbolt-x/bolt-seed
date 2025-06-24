@@ -104,7 +104,7 @@ WITH initial_s3_data as
 	    END as utm_campaign, 
 	    campaign_type::varchar, 
             CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE REPLACE(REPLACE(utm_content,'A SC','A+SC'),'USA CAN','USA+CAN') END as utm_content, 
-            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE utm_term END as utm_term,
+            CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE SPLIT_PART(utm_term,'- Copy',1) END as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as checkout_initiated, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
     GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_content, utm_term)
