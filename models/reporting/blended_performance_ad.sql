@@ -129,7 +129,7 @@ WITH initial_s3_data as
             COALESCE(SUM(fta_subs),0) as ft_orders, COALESCE(SUM(lta_subs),0) as lt_orders
         FROM initial_s3_data
         LEFT JOIN 
-            (SELECT CASE WHEN utm_campaign ~* 'demandgen' THEN 'YOUTUBE' ELSE 'GOOGLE' END as channel, campaign_name::varchar as google_campaign, utm_campaign
+            (SELECT CASE WHEN utm_campaign ~* 'demandgen' THEN 'YOUTUBE' ELSE 'GOOGLE' END as channel, campaign_name::varchar as google_campaign, utm_campaign::varchar
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
             WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
         WHERE (channel ~* 'google' or channel ~* 'youtube')
