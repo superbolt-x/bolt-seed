@@ -10,7 +10,7 @@ WITH initial_s3_data as
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
-            utm_campaign::varchar, google_campaign,
+            utm_campaign::varchar as utm_campaign_adj, google_campaign,
             CASE 
                 when utm_content = 'prospecting2' then 'Prospecting 2'
                 when utm_content = 'prospecting' then 'Prospecting'
@@ -132,9 +132,9 @@ WITH initial_s3_data as
             (SELECT CASE WHEN utm_campaign ~* 'demandgen' THEN 'YOUTUBE' ELSE 'GOOGLE' END as channel, campaign_name::varchar as google_campaign, 
 		CASE 
 		  WHEN utm_campaign = 'ds01-demandgen-video-us-allplacements-topic audiencetargeting' THEN 'ds01-demandgen-video-us-allplacements-topic+audiencetargeting'
-		  ELSE utm_campaign::varchar END AS utm_campaign
+		  ELSE utm_campaign::varchar END AS utm_campaign_adj
             FROM {{ source('gsheet_raw','utm_campaign_list') }} 
-            WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign)
+            WHERE channel = 'google' AND utm_campaign IS NOT NULL) USING(channel, utm_campaign_adj)
         WHERE (channel ~* 'google' or channel ~* 'youtube')
         GROUP BY 1,2,3,4,5,6,7,8,9,10
         {% if not loop.last %}UNION ALL
@@ -142,7 +142,7 @@ WITH initial_s3_data as
     {% endfor %}),
 
     platform_data as (
-    SELECT 'Google Ads' as channel, yt.date, yt.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign::varchar, 
+    SELECT 'Google Ads' as channel, yt.date, yt.date_granularity, country as market, product, campaign_name::varchar as google_campaign, utm_campaign_adj::varchar, 
             campaign_type_custom as campaign_type, ad_group_name::varchar as utm_content,  
             CASE 
                 WHEN ad_name ~* '5.1.25_DS-01_Testimonial_Bloating_Short_V1_9x16' THEN '5.1.25_DS_01_Testimonial_Bloating_Short_V1_9x16'
@@ -218,14 +218,14 @@ WITH initial_s3_data as
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
             COALESCE(SUM(add_to_cart),0) as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, sum(0) as ft_orders, sum(0) as lt_orders
         FROM {{ source('reporting','googleads_ad_performance') }} yt
-        LEFT JOIN (SELECT utm_campaign::varchar, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON yt.campaign_name = utm.google_campaign 
+        LEFT JOIN (SELECT utm_campaign_adj::varchar, google_campaign, COUNT(*) FROM s3_data GROUP BY 1,2) utm ON yt.campaign_name = utm.google_campaign 
         WHERE (campaign_type_custom = 'Youtube' or campaign_type_custom = 'Demand Gen')
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12),
 
     status_data as (
-    select channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status, count(*) as nb
+    select channel, market, product, google_campaign, utm_campaign_adj, campaign_type, utm_content, utm_term, campaign_status, ad_status, count(*) as nb
     from platform_data 
-    group by channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status
+    group by channel, market, product, google_campaign, utm_campaign_adj, campaign_type, utm_content, utm_term, campaign_status, ad_status
     ),
 
     lt_data as (
@@ -235,26 +235,26 @@ WITH initial_s3_data as
 		            THEN 'DS01 - Demand Gen - Video - US - All Placements - Topic Targeting' 
 		        ELSE google_campaign::varchar
 	        END as google_campaign,
-            utm_campaign::varchar, campaign_type::varchar, 
+            utm_campaign_adj::varchar, campaign_type::varchar, 
             CASE WHEN channel_adj = 'Google Ads' OR channel_adj = 'Bing' THEN null ELSE utm_content_adj END as utm_content, 
             CASE WHEN channel_adj = 'Google Ads' OR channel_adj = 'Bing' THEN null ELSE utm_term_adj END as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as checkout_initiated, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as revenue, ft_orders, lt_orders
         FROM s3_data),
 
     lt_final_data as (
-    select * from lt_data left join status_data using(channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term)
+    select * from lt_data left join status_data using(channel, market, product, google_campaign, utm_campaign_adj, campaign_type, utm_content, utm_term)
     ),
     
     final_data as
-    (SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status,
+    (SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign_adj as utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status,
         COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated, 
         COALESCE(SUM(add_to_cart),0) as add_to_cart, COALESCE(SUM(leads),0) as leads, COALESCE(SUM(purchases),0) as purchases, COALESCE(SUM(revenue),0) as revenue, COALESCE(SUM(ft_orders),0) as ft_orders, COALESCE(SUM(lt_orders),0) as lt_orders
     FROM
-    (SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status,
+    (SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign_adj, campaign_type, utm_content, utm_term, campaign_status, ad_status,
     spend, impressions, clicks, checkout_initiated, add_to_cart, leads, purchases, revenue, ft_orders, lt_orders
     FROM platform_data 
     UNION ALL 
-    SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status,
+    SELECT channel, date::date, date_granularity, market, product, google_campaign, utm_campaign_adj, campaign_type, utm_content, utm_term, campaign_status, ad_status,
     spend, impressions, clicks, checkout_initiated, add_to_cart, leads, purchases, revenue, ft_orders, lt_orders
     FROM lt_final_data)
     GROUP BY channel, date, date_granularity, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status)
