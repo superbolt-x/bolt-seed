@@ -99,7 +99,7 @@ WITH initial_s3_data as
 		        ELSE google_campaign::varchar
 	        END as google_campaign,
             bing_campaign::varchar, 
-	    CASE WHEN utm_campaign ~* 'Amplified Budget' AND utm_campaign !~* 'Mid-Performing' THEN 'DS01 - Prospect - A+SC Campaign - 7DC - KOL - Top-Performing Creators - Amplified Budget Strategy'
+	    CASE WHEN utm_campaign ~* 'Amplified Budget' AND utm_campaign !~* 'Mid-Performing' AND utm_campaign !~* 'Consolidated' THEN 'DS01 - Prospect - A+SC Campaign - 7DC - KOL - Top-Performing Creators - Amplified Budget Strategy'
 		ELSE REPLACE(utm_campaign,'A SC','A+SC') 
 	    END as utm_campaign, 
 	    campaign_type::varchar, 
