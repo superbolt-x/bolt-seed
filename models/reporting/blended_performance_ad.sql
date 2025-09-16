@@ -99,6 +99,7 @@ WITH initial_s3_data as
 				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
 				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
 				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN utm_term ~* '6.5.25_PB_Poop_Expl_Jar_Video_9x16_DD_2.12.25' THEN '6.5.25_PB_Poop_Expl_Jar_Video_9x16_DD_2.12.25'
 				WHEN utm_term ~* 'BAU ' OR utm_term ~* 'Video Image' OR utm_term ~* 'Topic Audience' THEN REPLACE(REPLACE(REPLACE(utm_term,'BAU ','BAU+'),'Video Image','Video+Image'),'Topic Audience','Topic+Audience')
             ELSE utm_term
             END AS utm_term_adj,
@@ -211,7 +212,9 @@ WITH initial_s3_data as
 				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
 				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
 				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN ad_name ~* '6.5.25_PB_Poop_Expl_Jar_Video_9x16_DD_2.12.25' THEN '6.5.25_PB_Poop_Expl_Jar_Video_9x16_DD_2.12.25'
 				WHEN ad_name ~* 'BAU ' OR ad_name ~* 'Video Image' OR ad_name ~* 'Topic Audience' THEN REPLACE(REPLACE(REPLACE(ad_name,'BAU ','BAU+'),'Video Image','Video+Image'),'Topic Audience','Topic+Audience')
+
                 ELSE ad_name::varchar
             END as utm_term, campaign_status, ad_status,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
