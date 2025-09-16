@@ -52,7 +52,7 @@ WITH initial_s3_data as
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080' THEN 'DS_01_Member_Stat_Hook_V1_20240716_1080x1080'
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_9x16_1x1-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16_1x1-Video'
                 WHEN utm_term ~* 'DS-01_Member_Stat_Hook_V1_9x16-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16-Video'
-		WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
+				WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4'
                 WHEN utm_term ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4-Video'
@@ -94,11 +94,12 @@ WITH initial_s3_data as
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_In-Stream' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_1x1_16x9-Video_InStream'
                 WHEN utm_term ~* 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts' THEN 'DS01_KOLYouTubeTesting_V1_NOW25_AllFormats-Video_Shorts'
                 WHEN utm_term ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
-		WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity'
-		WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing'
-		WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
-		WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
-		WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity'
+				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing'
+				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
+				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
+				WHEN utm_term = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN utm_term ~* 'BAU ' OR utm_term ~* 'Video Image' THEN REPLACE(REPLACE(utm_term,'BAU ','BAU+'),'Video Image','Video+Image')
             ELSE utm_term
             END AS utm_term_adj,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
@@ -175,7 +176,7 @@ WITH initial_s3_data as
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_20240716_1080x1080' THEN 'DS_01_Member_Stat_Hook_V1_20240716_1080x1080'
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_9x16_1x1-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16_1x1-Video'
                 WHEN ad_name ~* 'DS-01_Member_Stat_Hook_V1_9x16-Video' THEN 'DS_01_Member_Stat_Hook_V1_9x16-Video'
-		WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
+				WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-TopScaledImage' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V3-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V3-Video'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4'
                 WHEN ad_name ~* 'DS-01_NewPoopingEverydayTemplateTesting_Static_V4-Video' THEN 'DS_01_NewPoopingEverydayTemplateTesting_Static_V4-Video'
@@ -205,11 +206,12 @@ WITH initial_s3_data as
                 WHEN ad_name ~* 'DH_Bloat_Claim_Jar_Static_HQ' THEN 'DH_Bloat_Claim_Jar_Static_HQ'
                 WHEN ad_name ~* 'DH_Gas_Claim_Capsule_Static_HQ' THEN 'DH_Gas_Claim_Capsule_Static_HQ'
                 WHEN ad_name ~* 'DH_PB_Claim_Jar_Static_HQ-Video' THEN 'DH_PB_Claim_Jar_Static_HQ-Video'
-		WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity'
-		WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing'
-		WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
-		WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
-		WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Affinity'
+				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_Existing'
+				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_InMarket'
+				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting'
+				WHEN ad_name = 'DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking' THEN '4.17.25_DH_2in1_Lifestyle_Video_DD_42s_4x5-Video_AllPlacements_TopicTargeting_Cooking'
+				WHEN ad_name ~* 'BAU ' OR ad_name ~* 'Video Image' THEN REPLACE(REPLACE(ad_name,'BAU ','BAU+'),'Video Image','Video+Image')
                 ELSE ad_name::varchar
             END as utm_term, campaign_status, ad_status,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
