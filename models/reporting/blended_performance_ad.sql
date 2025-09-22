@@ -225,9 +225,9 @@ WITH initial_s3_data as
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12),
 
     status_data as (
-    select channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status, count(*) as nb
+    select channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, min(ad_status) as ad_status, count(*) as nb
     from platform_data 
-    group by channel, market, product, google_campaign, utm_campaign, campaign_type, utm_content, utm_term, campaign_status, ad_status
+    group by 1,2,3,4,5,6,7,8,9
     ),
 
     lt_data as (
