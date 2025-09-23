@@ -10,7 +10,8 @@ WITH initial_s3_data as
     s3_data as
     ({%- for date_granularity in date_granularity_list %}    
         SELECT '{{date_granularity}}' as date_granularity, {{date_granularity}} as date,
-            utm_campaign::varchar, google_campaign, bing_campaign,
+            case when utm_campaign::varchar = 'DS01 - Winback - Manual Campaign - 7DC1DV' then 'DS01 - Winback - Manual Campaign - 7DC' else utm_campaign::varchar end as utm_campaign, 
+			google_campaign, bing_campaign,
             utm_content, utm_term,
             CASE WHEN channel ~* 'meta' THEN 'Meta' 
                 WHEN channel ~* 'google' THEN 'Google Ads' 
