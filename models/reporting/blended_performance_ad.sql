@@ -114,6 +114,9 @@ WITH initial_s3_data as
                 WHEN utm_campaign ~* 'VS01' THEN 'VS01'
                 WHEN utm_campaign ~* 'PDS08' THEN 'PDS08'
                 WHEN utm_campaign ~* 'HCP' THEN 'HCP'
+				WHEN utm_campaign ~* 'DM02' THEN 'DM02'
+				WHEN utm_campaign ~* 'AM02' THEN 'AM02'
+				WHEN utm_campaign ~* 'PM02' THEN 'PM02'
                 ELSE 'Other'
             END as product,    
             CASE 
