@@ -69,7 +69,7 @@ WITH initial_s3_data as
         FROM {{ source('reporting','facebook_ad_performance') }}
         UNION ALL
         SELECT 'Google Ads' as channel, gc.date, gc.date_granularity, country as market, product, 
-            CASE WHEN campaign_type_custom = 'Amazon' THEN campaign_name::varchar ELSE google_campaign::varchar END as google_campaign, null as bing_campaign, utm_campaign::varchar, 
+            CASE WHEN campaign_type_custom = 'Amazon' THEN campaign_name::varchar ELSE COALESCE(google_campaign::varchar,campaign_name::varchar) END as google_campaign, null as bing_campaign, utm_campaign::varchar, 
             campaign_type_custom as campaign_type, null as utm_content, null as utm_term,
             COALESCE(SUM(spend),0) as spend, COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(checkout_initiated),0) as checkout_initiated,
             COALESCE(SUM(add_to_cart),0) as add_to_cart, 0 as leads, COALESCE(SUM(purchases),0) as purchases, 0 as "VS-01 WK", COALESCE(SUM(revenue),0) as revenue, 0 as ft_orders, 0 as lt_orders
