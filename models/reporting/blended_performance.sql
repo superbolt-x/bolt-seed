@@ -153,6 +153,7 @@ WITH initial_s3_data as
 	    SUM(spend) OVER (PARTITION BY channel, market, dg_breakdown, DATE_TRUNC('month', date)) AS total_spend
 	  FROM base b
 	),
+	
 	final AS (
 	  SELECT
 	    *,
@@ -179,5 +180,5 @@ WITH initial_s3_data as
 	  FROM with_totals
 	)
 	
-	SELECT *
-	FROM final
+SELECT *
+FROM final
