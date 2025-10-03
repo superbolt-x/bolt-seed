@@ -303,7 +303,14 @@ WITH initial_s3_data as
         WHEN date < '2025-08-01' THEN 10000.0
         ELSE 17000.0
       END AS monthly_fee_pool,
-	  CASE WHEN campaign_type IN ('Demand Gen', 'Youtube') THEN 'DG' ELSE 'Other' END AS dg_breakdown
+	  CASE 
+		WHEN channel = 'Google Ads'
+			AND market = 'US'
+			AND campaign_type IN ('Demand Gen', 'Youtube') 
+			AND campaign_name !~* 'image' 
+		THEN 'DG Video' 
+		ELSE 'Other' 
+		END AS dg_breakdown
 	FROM final_data),
 
 	with_totals AS (
@@ -318,8 +325,9 @@ WITH initial_s3_data as
 	    *,
 	    CASE 
 	      WHEN channel = 'Google Ads'
-	       AND market = 'US'
-	       AND campaign_type IN ('Demand Gen', 'Youtube')
+			AND market = 'US'
+			AND campaign_type IN ('Demand Gen', 'Youtube') 
+			AND campaign_name !~* 'image' 
 	      THEN 
 	        -- uplift stays at row level
 	        spend * 1.02565
@@ -334,6 +342,13 @@ WITH initial_s3_data as
 	          WHEN date_granularity = 'year'    THEN monthly_fee_pool * 12
 	          ELSE monthly_fee_pool / days_in_month
 	        END
+		  WHEN channel = 'Google Ads'
+			AND market = 'US'
+			AND campaign_type IN ('Demand Gen', 'Youtube') 
+			AND campaign_name ~* 'image' 
+	      THEN 
+	        -- uplift stays at row level
+	        spend * 1.02565
 	      ELSE 0
 	    END AS spend_with_fees
 	  FROM with_totals
