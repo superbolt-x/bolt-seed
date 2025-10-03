@@ -111,28 +111,73 @@ WITH initial_s3_data as
             CASE WHEN channel = 'Google Ads' OR channel = 'Bing' THEN null ELSE SPLIT_PART(utm_term,'- Copy',1) END as utm_term,
             0 as spend, 0 as impressions, 0 as clicks, 0 as checkout_initiated, 0 as add_to_cart, 0 as leads, 0 as purchases, 0 as "VS-01 WK", 0 as revenue, ft_orders, lt_orders
         FROM s3_data)
-    GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_content, utm_term)
+    GROUP BY channel, date, date_granularity, market, product, google_campaign, bing_campaign, utm_campaign, campaign_type, utm_content, utm_term),
     
-SELECT channel, 
-  date, 
-  date_granularity, 
-  market, 
-  product, 
-  google_campaign,
-  bing_campaign,
-  utm_campaign, 
-  campaign_type, 
-  utm_content, 
-  utm_term,
-  spend,
-  impressions,
-  clicks,
-  add_to_cart,
-  checkout_initiated,
-  leads,
-  purchases,
-  "VS-01 WK",
-  revenue,
-  ft_orders,
-  lt_orders
-FROM final_data
+	base as (
+	SELECT channel, 
+	  date, 
+	  date_granularity, 
+	  market, 
+	  product, 
+	  google_campaign,
+	  bing_campaign,
+	  utm_campaign, 
+	  campaign_type, 
+	  utm_content, 
+	  utm_term,
+	  spend,
+	  impressions,
+	  clicks,
+	  add_to_cart,
+	  checkout_initiated,
+	  leads,
+	  purchases,
+	  "VS-01 WK",
+	  revenue,
+	  ft_orders,
+	  lt_orders,
+      DATE_TRUNC('month', date) AS month_start,
+      EXTRACT(day FROM DATEADD(day, -1, DATEADD(month, 1, DATE_TRUNC('month', date)))) AS days_in_month,
+	  DATEDIFF(day, DATE_TRUNC('quarter', date), DATEADD(quarter, 1, DATE_TRUNC('quarter', date))) AS days_in_quarter,
+      DATEDIFF(day, DATE_TRUNC('year', date), DATEADD(year, 1, DATE_TRUNC('year', date)))         AS days_in_year,
+	  CASE 
+        WHEN date < '2025-08-01' THEN 10000.0
+        ELSE 17000.0
+      END AS monthly_fee_pool,
+	  CASE WHEN campaign_type IN ('Demand Gen', 'Youtube') THEN 'DG' ELSE 'Other' END AS dg_breakdown
+	FROM final_data),
+
+	with_totals AS (
+	  SELECT
+	    b.*,
+	    SUM(spend) OVER (PARTITION BY channel, market, dg_breakdown, DATE_TRUNC('month', date)) AS total_spend
+	  FROM base b
+	),
+	final AS (
+	  SELECT
+	    *,
+	    CASE 
+	      WHEN channel = 'Google Ads'
+	       AND market = 'US'
+	       AND campaign_type IN ('Demand Gen', 'Youtube')
+	      THEN 
+	        -- uplift stays at row level
+	        spend * 1.02565
+	        +
+	        -- fee allocation scales by granularity
+	        (spend / NULLIF(total_spend,0)) *
+	        CASE 
+	          WHEN date_granularity = 'day'     THEN monthly_fee_pool / days_in_month
+	          WHEN date_granularity = 'week'    THEN (monthly_fee_pool / days_in_month) * 7
+	          WHEN date_granularity = 'month'   THEN monthly_fee_pool
+	          WHEN date_granularity = 'quarter' THEN monthly_fee_pool * 3
+	          WHEN date_granularity = 'year'    THEN monthly_fee_pool * 12
+	          ELSE monthly_fee_pool / days_in_month
+	        END
+	      ELSE 0
+	    END AS spend_with_fees
+	  FROM with_totals
+	)
+	
+	SELECT *
+	FROM final
