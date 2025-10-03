@@ -148,7 +148,7 @@ WITH initial_s3_data as
 		WHEN channel = 'Google Ads'
 			AND market = 'US'
 			AND campaign_type IN ('Demand Gen', 'Youtube') 
-			AND campaign_name !~* 'image' 
+			AND google_campaign !~* 'image' 
 		THEN 'DG Video' 
 		ELSE 'Other' 
 		END AS dg_breakdown
@@ -168,7 +168,7 @@ WITH initial_s3_data as
 	      WHEN channel = 'Google Ads'
 			AND market = 'US'
 			AND campaign_type IN ('Demand Gen', 'Youtube') 
-			AND campaign_name !~* 'image' 
+			AND google_campaign !~* 'image' 
 	      THEN 
 	        -- uplift stays at row level
 	        spend * 1.02565
@@ -186,7 +186,7 @@ WITH initial_s3_data as
 		  WHEN channel = 'Google Ads'
 			AND market = 'US'
 			AND campaign_type IN ('Demand Gen', 'Youtube') 
-			AND campaign_name ~* 'image' 
+			AND google_campaign ~* 'image' 
 	      THEN 
 	        -- uplift stays at row level
 	        spend * 1.02565
