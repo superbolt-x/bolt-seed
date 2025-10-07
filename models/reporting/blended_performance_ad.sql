@@ -17,8 +17,8 @@ WITH initial_s3_data as
                 when utm_content = 'prospecting' then 'Prospecting'
                 when utm_content = 'infeed' then 'In-Feed'
                 when utm_content = 'instream' then 'In-Stream'
-				when utm_content ~* 'DM02_DG_US+CAN_AllGenders_18-65_TopicAudienceStacks_AllPlacements_DM02Consolidated' then 'DM02_DG_US+CAN_AllGenders_18-65_Topic+AudienceStacks_AllPlacements_DM02Consolidated'
-		when utm_content ~* '_BAU ' OR utm_content ~* '_TopicStack ' OR utm_content ~* '_Topic ' OR utm_content ~* 'UnsubscribedEmail SMS'
+				when utm_content ~* 'DM02_DG_US CAN_AllGenders_18-65_TopicAudienceStacks_AllPlacements_DM02Consolidated' then 'DM02_DG_US+CAN_AllGenders_18-65_Topic+AudienceStacks_AllPlacements_DM02Consolidated'
+				when utm_content ~* '_BAU ' OR utm_content ~* '_TopicStack ' OR utm_content ~* '_Topic ' OR utm_content ~* 'UnsubscribedEmail SMS'
 			THEN REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(utm_content, '_US CAN', '_US+CAN'), '_Topic ','_Topic+'), '_BAU ','_BAU+'),'_TopicStack ','_TopicStack+'),'UnsubscribedEmail SMS','UnsubscribedEmail+SMS')
                 else REPLACE(utm_content, '_US CAN', '_US+CAN')
             end as utm_content_adj,
