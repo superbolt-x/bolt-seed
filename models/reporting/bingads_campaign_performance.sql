@@ -36,6 +36,5 @@ spend,
 impressions,
 clicks,
 conversions as purchases,
-revenue,
-view_through_conversions
+revenue
 FROM {{ ref('bingads_performance_by_campaign') }}
